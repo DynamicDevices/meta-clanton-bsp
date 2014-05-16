@@ -88,3 +88,24 @@ SRC_URI += "file://0018-Quark-sensors-quark.patch"
 SRC_URI += "file://0019-Quark-SC-SPI-quark.patch"
 SRC_URI += "file://0020-Quark-IIO-quark.patch"
 SRC_URI += "file://0021-Quark-SPI-flash-quark.patch"
+
+#
+# AJL - FIXME - No idea why I need to put this kludge in. 
+# 
+# For some reason bitbake thinks it should be in linux-standard-clanton directory not linux
+#
+
+do_kernel_configme () {
+}
+
+do_configure () {
+  cd ${S}
+  cp ${WORKDIR}/quark.cfg ${S}/.config
+
+  rm -Rf ${WORKDIR}/linux-clanton-standard-build
+  ln -s ${S}  ${WORKDIR}/linux-clanton-standard-build
+
+  make oldconfig
+}
+
+
